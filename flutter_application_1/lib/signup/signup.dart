@@ -1,8 +1,12 @@
+import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http; // For HTTP requests
+import 'package:fluttertoast/fluttertoast.dart'; // For toast notifications
 import 'custom_text_field.dart';
 import 'auth_button.dart';
 import '../homescreen.dart';
 import '../survey/survey.dart';
+
 
 class Signup extends StatelessWidget {
   const Signup({super.key});
@@ -34,6 +38,64 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Function to send registration request
+  Future<void> _registerUser() async {
+    const String baseUrl = 'https://1201-196-203-181-122.ngrok-free.app/api'; // Replace with your server URL
+    final Uri url = Uri.parse('$baseUrl/auth/register');
+
+    final String name = _usernameController.text.trim();
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'name': name,
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        // Successfully registered
+        final responseData = json.decode(response.body);
+        print('Registration successful: $responseData');
+        showToast('Registration successful!'); // Show success message
+
+        // Navigate to the survey page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Survey()),
+        );
+      } else {
+        // Handle errors (e.g., email already in use)
+        final responseData = json.decode(response.body);
+        final errorMessage = responseData['error'] ?? 'Registration failed';
+        showToast(errorMessage, isError: true); // Show error message
+      }
+    } catch (e) {
+      // Handle network or other errors
+      print('Error during registration: $e');
+      showToast('An error occurred. Please try again.', isError: true); // Show error message
+    }
+  }
+
+  // Function to show toast messages
+void showToast(String message, {bool isError = false}) {
+  Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_SHORT, // Show toast for a short duration
+    gravity: ToastGravity.BOTTOM, // Position at the bottom of the screen
+    backgroundColor: isError ? Colors.red : Colors.green, // Color based on error status
+    textColor: Colors.white, // Text color
+    fontSize: 16.0, // Font size
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,23 +120,23 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                     Center(
+                  Center(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const WelcomeScreen()),
                         );
                       },
-                    
-                      child:const Text(
-                      'Pagey',
-                      style: TextStyle(
-                        fontSize: 50,
-                        fontFamily: 'Outfit',
-                        color: Colors.black,
+                      child: const Text(
+                        'Pagey',
+                        style: TextStyle(
+                          fontSize: 50,
+                          fontFamily: 'Outfit',
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
                     ),
                   ),
                   const SizedBox(height: 41),
@@ -190,11 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: AuthButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Handle form submission
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Survey()),
-                          );
+                          _registerUser(); // Call the registration method
                         }
                       },
                       label: 'Create an account',

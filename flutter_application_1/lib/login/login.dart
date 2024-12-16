@@ -1,26 +1,11 @@
+import 'dart:convert'; // For JSON encoding/decoding
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http; // For HTTP requests
+import 'package:fluttertoast/fluttertoast.dart'; // For toast notifications
 import 'custom_text_field.dart';
 import 'login_button.dart';
 import 'divider_text.dart';
-
-
-
-class Login extends StatelessWidget {
-  const Login({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Pagey',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'Outfit',
-      ),
-      home: const LoginScreen(),
-    );
-  }
-}
+import '../booklibrary/book_reader_screen.dart'; // Import BookReaderScreen
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -32,6 +17,68 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Function to send login request
+  Future<void> _loginUser() async {
+    const String baseUrl = 'https://1201-196-203-181-122.ngrok-free.app/api'; // Replace with your backend URL
+    final Uri url = Uri.parse('$baseUrl/auth/login'); // Adjust this endpoint to your backend's login route
+
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    // Debugging: Print the values to check if they're correct
+    print('Email: $email');
+    print('Password: $password');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      // Debugging: Check the response status and body
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      // Check if the response status code is 200 (success)
+      if (response.statusCode == 200) {
+        showToast('Login successful!');
+
+        // Navigate to BookReaderScreen after successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const BookReaderScreen()),
+        );
+      } else {
+        // Handle invalid credentials or other errors
+        showToast('Incorrect email or password', isError: true);
+      }
+    } catch (e) {
+      // Handle network or other errors
+      print('Error during login: $e');
+      showToast('An error occurred. Please try again.', isError: true); // Show error message
+    }
+  }
+
+  // Function to show toast messages
+  void showToast(String message, {bool isError = false}) {
+    Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: isError ? Colors.red : Colors.green,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,19 +117,26 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 73),
                   CustomTextField(
                     label: 'Email or mobile phone number',
-                    onChanged: (value) {},
+                    controller: _emailController,
                     textInputType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      // Set the value of the emailController to the new value
+                      _emailController.text = value;
+                    },
                   ),
                   const SizedBox(height: 20),
                   CustomTextField(
                     label: 'Your password',
-                    onChanged: (value) {},
+                    controller: _passwordController,
                     isPassword: true,
                     isPasswordVisible: _isPasswordVisible,
                     onVisibilityToggle: () {
                       setState(() {
                         _isPasswordVisible = !_isPasswordVisible;
                       });
+                    },
+                    onChanged: (value) {
+                      _passwordController.text = value;
                     },
                   ),
                   const SizedBox(height: 20),
@@ -117,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   LoginButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // Perform login action
+                        _loginUser(); // Call the login method
                       }
                     },
                   ),
@@ -136,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // Handle "Forget your password"
+                          // Handle "Forgot your password"
                         },
                         child: const Text(
                           'Forgot your password',
