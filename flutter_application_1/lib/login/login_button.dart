@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/homepage/homepage.dart';
+
 class LoginButton extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -11,12 +11,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: (){
-        Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                      );
-      },
+      onPressed: onPressed, // Call the onPressed callback from LoginScreen
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFF2C3E50),
         shape: RoundedRectangleBorder(

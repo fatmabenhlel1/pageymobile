@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.isPassword = false,
     this.isPasswordVisible,
     this.onVisibilityToggle,
-    this.textInputType = TextInputType.text,
+    this.textInputType = TextInputType.text, required TextEditingController controller,
   }) : super(key: key);
 
   @override
