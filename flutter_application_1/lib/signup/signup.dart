@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // Function to send registration request
   Future<void> _registerUser() async {
-    const String baseUrl = 'https://1201-196-203-181-122.ngrok-free.app/api'; // Replace with your server URL
+    const String baseUrl = 'https://999b-196-203-181-122.ngrok-free.app/api'; // Replace with your server URL
     final Uri url = Uri.parse('$baseUrl/auth/register');
 
     final String name = _usernameController.text.trim();

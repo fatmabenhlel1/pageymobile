@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // Function to send login request
   Future<void> _loginUser() async {
-    const String baseUrl = 'https://1201-196-203-181-122.ngrok-free.app/api'; // Replace with your backend URL
+    const String baseUrl = 'https://999b-196-203-181-122.ngrok-free.app/api'; // Replace with your backend URL
     final Uri url = Uri.parse('$baseUrl/auth/login'); // Adjust this endpoint to your backend's login route
 
     final String email = _emailController.text.trim();
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 100),
             child: Form(
               key: _formKey,
               child: Column(

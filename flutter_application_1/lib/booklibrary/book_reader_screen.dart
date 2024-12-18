@@ -3,7 +3,7 @@ import 'header_section.dart';
 import 'welcome_section.dart';
 import 'search_bar.dart';
 import 'category_list.dart';
-//import 'book_grid.dart';
+import 'book_grid.dart';
 import 'new_arrivals.dart';
 
 class BookReaderScreen extends StatelessWidget {
@@ -27,7 +27,7 @@ class BookReaderScreen extends StatelessWidget {
               SizedBox(height: 34),
               CategoryList(),
               SizedBox(height: 30),
-              NewArrivals(),
+              BookGrid(),
             ],
           ),
         ),

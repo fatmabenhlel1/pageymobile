@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dropdown_field.dart';
 import 'custom_button.dart';
-import '../homepage/homepage.dart';
+import '../booklibrary/book_reader_screen.dart';
 
 
 class Survey extends StatelessWidget {
@@ -123,7 +123,7 @@ class SurveyScreen extends StatelessWidget {
                   CustomButton(text: 'Continue',
                               onPressed: (){Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => const Homepage()),);}, 
+                                MaterialPageRoute(builder: (context) => const BookReaderScreen()),);}, 
                               fontSize: 14),
                       ],
               ),

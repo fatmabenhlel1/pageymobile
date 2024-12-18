@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 
 class BookDetailsScreen extends StatelessWidget {
+  final String title;
+  final String author;
+  final String imagePath;
+  final String description;
+
+  const BookDetailsScreen({
+    Key? key,
+    required this.title,
+    required this.author,
+    required this.imagePath,
+    required this.description,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +55,7 @@ class BookDetailsScreen extends StatelessWidget {
             children: [
               Center(
                 child: Image.asset(
-                  'assets/images/CR.png', // Replace with your local image path
+                  imagePath, // Dynamic image path
                   height: 200,
                 ),
               ),
@@ -51,7 +64,7 @@ class BookDetailsScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Catcher in the Rye',
+                      title, // Dynamic title
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -59,7 +72,7 @@ class BookDetailsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'J.D. Salinger',
+                      author, // Dynamic author
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[600],
@@ -78,23 +91,7 @@ class BookDetailsScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                'J.D. Salinger was an American writer, best known for his 1951 novel The Catcher in the Rye. Before its publication, Salinger published several short stories in Story magazine.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[800],
-                ),
-              ),
-              SizedBox(height: 24),
-              Text(
-                'Overview',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'The Catcher in the Rye is a novel by J. D. Salinger, partially published in serial form in 1945-1946 and as a novel in 1951. It was originally intended for adults but is often read by adolescents for its theme of angst, alienation, and as a critique...',
+                description, // Dynamic description
                 style: TextStyle(
                   fontSize: 14,
                   color: Colors.grey[800],

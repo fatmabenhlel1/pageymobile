@@ -59,10 +59,14 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/menu-svgrepo-com.png
-    - assets/images/CR.png
+    - assets/images/catcher.png
     - assets/images/rd.jpg
     - assets/images/lor.jpg
     - assets/images/profile1.png
+    - assets/images/mock.jpg
+    - assets/images/grapes.jpg
+    - assets/images/mice.jpg
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
